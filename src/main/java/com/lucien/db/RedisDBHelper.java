@@ -3,6 +3,7 @@ package com.lucien.db;
 import com.lucien.utils.AlertUtils;
 
 import java.util.List;
+
 import redis.clients.jedis.Jedis;
 
 import static java.lang.System.out;
@@ -30,8 +31,13 @@ public class RedisDBHelper {
         return redisDBHelper;
     }
 
-    private Jedis jedis;
+    public static void init() {
+        RedisDBHelper dbHelper = RedisDBHelper.getRedisDBHelper();
+        dbHelper.setProperty("name", "lucien");
+        out.println(":" + dbHelper.getProperty("name"));
+    }
 
+    private Jedis jedis;
     public RedisDBHelper() {
         jedis = new Jedis("localhost");
         if (jedis.isConnected()) {
@@ -40,6 +46,10 @@ public class RedisDBHelper {
             AlertUtils.popMessage("","数据库连接失败，将无法存储数据!\n" +
                     "请查看是否开启数据库服务。");
         }
+    }
+
+    private boolean isConnected() {
+        return jedis != null && jedis.isConnected();
     }
 
     public void setProperty(String key, String value) {
@@ -70,15 +80,5 @@ public class RedisDBHelper {
             res = jedis.lrange(key,start,end);
         }
         return res;
-    }
-
-    private boolean isConnected() {
-        return jedis != null && jedis.isConnected();
-    }
-
-    public static void init() {
-        RedisDBHelper dbHelper = RedisDBHelper.getRedisDBHelper();
-        dbHelper.setProperty("name", "lucien");
-        out.println(":" + dbHelper.getProperty("name"));
     }
 }
