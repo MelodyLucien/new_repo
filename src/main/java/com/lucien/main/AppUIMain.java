@@ -1,7 +1,5 @@
 package com.lucien.main;
 
-import com.lucien.db.RedisDBHelper;
-
 import java.io.IOException;
 
 import javafx.application.Application;
@@ -25,7 +23,7 @@ public class AppUIMain extends Application {
         mainStage.show();
         // use this method if load data in controller
         // startWithData(primaryStage);
-        RedisDBHelper.init();
+       // RedisDBHelper.init();
     }
 
     private Scene getScene(String fxml){
